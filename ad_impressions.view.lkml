@@ -3,7 +3,6 @@ include: "ad_impressions_adapter.view"
 include: "ads_insights_actions_base.view"
 include: "ads_insights_age_and_gender.view"
 include: "ads_insights_base.view"
-include: "ads_insights_country.view"
 include: "ads_insights_hour.view"
 include: "ads_insights_platform_and_device.view"
 include: "ads_insights_region.view"
@@ -46,17 +45,13 @@ explore: ad_impressions {
 }
 
 view: breakdowns_base {
-  extends: [age_and_gender_base, country_base, region_base, hour_base, platform_and_device_base]
+  extends: [age_and_gender_base, region_base, hour_base, platform_and_device_base]
   dimension: breakdowns {
     hidden: yes
     sql: {% if (fact.impression_device._in_query or fact.platform_position_raw._in_query or fact.publisher_platform_raw._in_query) %}
       CONCAT(CAST(${impression_device} AS STRING),"|", CAST(${platform_position_raw} AS STRING),"|", CAST(${publisher_platform_raw} AS STRING))
-      {% elsif (fact.country._in_query) %}
-        {% if (fact.region._in_query) %}
+      {% elsif (fact.country._in_query or fact.region._in_query) %}
       CONCAT(CAST(${country} AS STRING),"|", CAST(${region} AS STRING))
-        {% else %}
-      CAST(${country} AS STRING)
-        {% endif %}
       {% elsif (fact.age._in_query or fact.gender_raw._in_query) %}
       CONCAT(CAST(${age} AS STRING),"|", CAST(${gender_raw} AS STRING))
       {% elsif (fact.hourly_stats_aggregated_by_audience_time_zone._in_query) %}
