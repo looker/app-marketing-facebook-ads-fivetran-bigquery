@@ -29,6 +29,7 @@ view: platform_and_device_base {
   }
 
   dimension: platform_position_raw {
+    hidden: yes
     type: string
     sql: ${TABLE}.platform_position ;;
   }

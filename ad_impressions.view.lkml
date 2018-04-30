@@ -49,18 +49,18 @@ view: breakdowns_base {
   extends: [age_and_gender_base, country_base, region_base, hour_base, platform_and_device_base]
   dimension: breakdowns {
     hidden: yes
-    sql: {% if (fact.impression_device._in_query or fact.device_type._in_query or fact.platform_position._in_query or fact.publisher_platform._in_query) %}
-      CONCAT(CAST(${impression_device} AS STRING),"|", CAST(${platform_position} AS STRING),"|", CAST(${publisher_platform} AS STRING))
+    sql: {% if (fact.impression_device._in_query or fact.platform_position_raw._in_query or fact.publisher_platform_raw._in_query) %}
+      CONCAT(CAST(${impression_device} AS STRING),"|", CAST(${platform_position_raw} AS STRING),"|", CAST(${publisher_platform_raw} AS STRING))
       {% elsif (fact.country._in_query) %}
         {% if (fact.region._in_query) %}
       CONCAT(CAST(${country} AS STRING),"|", CAST(${region} AS STRING))
         {% else %}
       CAST(${country} AS STRING)
         {% endif %}
-      {% elsif (fact.age._in_query or fact.gender._in_query) %}
-      CONCAT(CAST(${age} AS STRING),"|", CAST(${gender} AS STRING))
-      {% elsif (fact.hour._in_query) %}
-      CAST(${hour} AS STRING)
+      {% elsif (fact.age._in_query or fact.gender_raw._in_query) %}
+      CONCAT(CAST(${age} AS STRING),"|", CAST(${gender_raw} AS STRING))
+      {% elsif (fact.hourly_stats_aggregated_by_audience_time_zone._in_query) %}
+      CAST(${hourly_stats_aggregated_by_audience_time_zone} AS STRING)
       {% else %}1
       {% endif %} ;;
   }
