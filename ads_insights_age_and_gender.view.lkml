@@ -5,7 +5,6 @@ view: age_and_gender_base {
 
   dimension: age {
     type: string
-    sql: ${TABLE}.age ;;
   }
 
   dimension: gender_raw {

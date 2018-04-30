@@ -6,7 +6,6 @@ view: hour_base {
   dimension: hourly_stats_aggregated_by_audience_time_zone {
     hidden: yes
     type: string
-    sql: ${TABLE}.hourly_stats_aggregated_by_audience_time_zone ;;
   }
 
   dimension: hour {

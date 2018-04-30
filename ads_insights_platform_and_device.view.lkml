@@ -6,7 +6,6 @@ view: platform_and_device_base {
   dimension: impression_device {
     hidden: yes
     type: string
-    sql: ${TABLE}.impression_device ;;
   }
 
   dimension: device_type {

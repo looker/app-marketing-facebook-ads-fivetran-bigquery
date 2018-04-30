@@ -130,8 +130,8 @@ view: period_base {
   dimension: date_period_latest {
     type: yesno
     group_label: "Event"
-    sql: ${date_period} <= CURRENT_DATE() AND ${date_end_of_period} >= CURRENT_DATE() ;;
-    # expression: ${date_period} <= now() AND ${date_end_of_period} >= now() ;;
+#     sql: ${date_period} <= CURRENT_DATE() AND ${date_end_of_period} >= CURRENT_DATE() ;;
+    expression: ${date_period} <= now() AND ${date_end_of_period} >= now() ;;
   }
   dimension: date_period_dynamic_grain {
     hidden: yes

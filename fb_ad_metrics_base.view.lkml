@@ -7,7 +7,7 @@ view: fb_ad_metrics_base {
   dimension: frequency {
     hidden: yes
     type: number
-    sql: ${TABLE}.frequency ;;
+#     sql: ${TABLE}.frequency ;;
     value_format_name: decimal_1
   }
 
@@ -23,7 +23,7 @@ view: fb_ad_metrics_base {
   dimension: reach {
     hidden: yes
     type: number
-    sql: ${TABLE}.reach ;;
+#     sql: ${TABLE}.reach ;;
     value_format_name: decimal_1
   }
 

@@ -48,16 +48,26 @@ view: breakdowns_base {
   extends: [age_and_gender_base, region_base, hour_base, platform_and_device_base]
   dimension: breakdowns {
     hidden: yes
-    sql: {% if (fact.impression_device._in_query or fact.platform_position_raw._in_query or fact.publisher_platform_raw._in_query) %}
+    sql: {% if (fact.impression_device._in_query or fact.platform_position._in_query or fact.platform_position_raw._in_query or fact.publisher_platform_raw._in_query or fact.publisher_platform._in_query) %}
       CONCAT(CAST(${impression_device} AS STRING),"|", CAST(${platform_position_raw} AS STRING),"|", CAST(${publisher_platform_raw} AS STRING))
       {% elsif (fact.country._in_query or fact.region._in_query) %}
       CONCAT(CAST(${country} AS STRING),"|", CAST(${region} AS STRING))
-      {% elsif (fact.age._in_query or fact.gender_raw._in_query) %}
+      {% elsif (fact.age._in_query or fact.gender_raw._in_query or fact.gender._in_query) %}
       CONCAT(CAST(${age} AS STRING),"|", CAST(${gender_raw} AS STRING))
       {% elsif (fact.hourly_stats_aggregated_by_audience_time_zone._in_query) %}
       CAST(${hourly_stats_aggregated_by_audience_time_zone} AS STRING)
       {% else %}1
       {% endif %} ;;
+#     expression: {% if (fact.impression_device._in_query or fact.platform_position_raw._in_query or fact.publisher_platform_raw._in_query) %}
+#       concat(${impression_device}, "|", ${platform_position_raw}, "|", ${publisher_platform_raw})
+#       {% elsif (fact.country._in_query or fact.region._in_query) %}
+#       concat(${country} AS STRING), "|", ${region})
+#       {% elsif (fact.age._in_query or fact.gender_raw._in_query) %}
+#       concat(${age} AS STRING), "|", ${gender_raw})
+#       {% elsif (fact.hourly_stats_aggregated_by_audience_time_zone._in_query) %}
+#       ${hourly_stats_aggregated_by_audience_time_zone}
+#       {% else %}1
+#       {% endif %} ;;
   }
 }
 
@@ -73,23 +83,28 @@ view: ad_impressions {
   dimension: primary_key {
     hidden: yes
     primary_key: yes
-#     expression: concat(${date_date}, ${account_id}, ${campaign_id}, ${adset_id}, ${ad_id}, ${breakdowns}) ;;
-    sql: CONCAT(CAST(${date_date} AS STRING)
-      ,"|", CAST(${account_id} AS STRING)
-      ,"|", CAST(${campaign_id} AS STRING)
-      ,"|", CAST(${adset_id} AS STRING)
-      ,"|", CAST(${ad_id} AS STRING)
-      ,"|", CAST(${breakdowns} AS STRING)
-      ) ;;
+    expression: concat(${fact.date_date}
+      , "|", ${account_id}
+      , "|", ${campaign_id}
+      , "|", ${adset_id}
+      , "|", ${ad_id}
+      , "|", ${breakdowns}) ;;
   }
 }
 
 view: actions {
   extends: [ads_insights_actions_base, breakdowns_base, ad_impressions_actions_adapter]
+
   dimension: age {
     hidden: yes
   }
   dimension: country {
+    hidden: yes
+  }
+  dimension: region {
+    hidden: yes
+  }
+  dimension: state {
     hidden: yes
   }
   dimension: gender {
@@ -107,5 +122,4 @@ view: actions {
   dimension: publisher_platform {
     hidden: yes
   }
-
 }

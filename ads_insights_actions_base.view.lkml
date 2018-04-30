@@ -7,24 +7,20 @@ view: ads_insights_actions_base {
   dimension: _1_d_view {
     hidden: yes
     type: number
-    sql: ${TABLE}._1_d_view ;;
   }
 
   dimension: _28_d_click {
     hidden: yes
     type: number
-    sql: ${TABLE}._28_d_click ;;
   }
 
   dimension: action_type {
     type: string
-    sql: ${TABLE}.action_type ;;
   }
 
   dimension: ad_id {
     hidden: yes
     type: string
-    sql: ${TABLE}.ad_id ;;
   }
 
   dimension_group: date {

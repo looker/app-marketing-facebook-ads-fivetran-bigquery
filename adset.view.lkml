@@ -19,37 +19,20 @@ view: adset {
     hidden: yes
     primary_key: yes
     type: string
-    sql: ${TABLE}.id ;;
   }
 
   dimension: campaign_id {
     hidden: yes
     type: string
-    sql: ${TABLE}.campaign_id ;;
   }
 
   dimension: name {
     hidden: yes
     type: string
-    sql: ${TABLE}.name ;;
   }
 
   measure: count {
     hidden: yes
     type: count
-    drill_fields: [detail*]
-  }
-
-  # ----- Sets of fields for drilling ------
-  set: detail {
-    fields: [
-      id,
-      name,
-      campaign.name,
-      campaign.id,
-      ad.count,
-      ads_insights.count,
-      ads_insights_country.count
-    ]
   }
 }

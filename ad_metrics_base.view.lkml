@@ -4,31 +4,26 @@ view: ad_metrics_base {
   dimension: clicks {
     hidden: yes
     type: number
-    sql: ${TABLE}.clicks ;;
   }
 
   dimension: conversions {
     hidden: yes
     type: number
-    sql: ${TABLE}.conversions ;;
   }
 
   dimension: conversionvalue {
     hidden: yes
     type: number
-    sql: ${TABLE}.conversionvalue ;;
   }
 
   dimension: cost {
     hidden: yes
     type: number
-    sql: ${TABLE}.cost ;;
   }
 
   dimension: impressions {
     hidden: yes
     type: number
-    sql: ${TABLE}.impressions ;;
   }
 
   dimension: click_rate {
@@ -36,7 +31,7 @@ view: ad_metrics_base {
     label: "Click Through Rate"
     description: "Percent of people that click on an ad."
     type: number
-    sql: ${clicks}*1.0/nullif(${impressions},0) ;;
+    expression: ${clicks}*1.0/ if(${impressions} = 0, null, ${impressions}) ;;
     value_format_name: percent_2
   }
 
@@ -45,7 +40,7 @@ view: ad_metrics_base {
     label: "Cost per Conversion"
     description: "Cost per conversion."
     type: number
-    sql: ${cost}*1.0 / NULLIF(${conversions},0) ;;
+    expression: ${cost}*1.0 / if(${conversions} = 0, null, ${conversions}) ;;
     value_format_name: usd
   }
 
@@ -54,7 +49,7 @@ view: ad_metrics_base {
     label: "Value per Conversion"
     description: "Conv. Value per conversion."
     type: number
-    sql: ${conversionvalue}*1.0 / NULLIF(${conversions},0) ;;
+    expression: ${conversionvalue}*1.0 / if(${conversions} = 0, null, ${conversions}) ;;
     value_format_name: usd
   }
 
@@ -63,7 +58,7 @@ view: ad_metrics_base {
     label: "Cost per Click"
     description: "Average cost per ad click."
     type: number
-    sql: ${cost}*1.0 / NULLIF(${clicks},0) ;;
+    expression: ${cost}*1.0 / if(${clicks} = 0, null, ${clicks}) ;;
     value_format_name: usd
   }
 
@@ -72,7 +67,7 @@ view: ad_metrics_base {
     label: "Value per Click"
     description: "Conv. Value per Click."
     type: number
-    sql: ${conversionvalue}*1.0 / NULLIF(${clicks},0) ;;
+    expression: ${conversionvalue}*1.0 / if(${clicks} = 0, null, ${clicks}) ;;
     value_format_name: usd
   }
 
@@ -81,7 +76,7 @@ view: ad_metrics_base {
     label: "CPM"
     description: "Average cost per 1000 ad impressions."
     type: number
-    sql: ${cost}*1.0 / NULLIF(${impressions},0) * 1000.0 ;;
+    expression: ${cost}*1.0 / if(${impressions} = 0, null, ${impressions}) * 1000.0 ;;
     value_format_name: usd
   }
 
@@ -90,7 +85,7 @@ view: ad_metrics_base {
     label: "Value per Impression"
     description: "Conv. Value per Impression."
     type: number
-    sql: ${conversionvalue}*1.0 / NULLIF(${impressions},0) ;;
+    expression: ${conversionvalue}*1.0 / if(${impressions} = 0, null, ${impressions}) ;;
     value_format_name: usd
   }
 
@@ -99,7 +94,7 @@ view: ad_metrics_base {
     label: "ROAS"
     description: "Return on Ad Spend."
     type: number
-    sql: ${conversionvalue}*1.0 / NULLIF(${cost},0) ;;
+    expression: ${conversionvalue}*1.0 / if(${cost} = 0, null, ${cost}) ;;
     value_format_name: percent_0
   }
 
@@ -108,7 +103,7 @@ view: ad_metrics_base {
     label: "Conversion Rate"
     description: "Percent of people that convert after they interact with an ad."
     type: number
-    sql: ${conversions}*1.0 / NULLIF(${clicks},0) ;;
+    expression: ${conversions}*1.0 / if(${clicks} = 0, null, ${clicks}) ;;
     value_format_name: percent_2
   }
 
