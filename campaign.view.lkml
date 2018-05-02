@@ -3,18 +3,22 @@ include: "/app_marketing_analytics_config/facebook_ads_config.view"
 include: "account.view"
 include: "fivetran_base.view"
 
-explore: campaign {
+explore: campaign_fb_adapter {
+  view_name: campaign
+  from: campaign_fb_adapter
+  hidden: yes
 
   join: account {
+    from: account_fb_adapter
     type: left_outer
     sql_on: ${campaign.account_id} = ${account.id} ;;
     relationship: many_to_one
   }
 }
 
-view: campaign {
+view: campaign_fb_adapter {
   extends: [fivetran_base, facebook_ads_config]
-  sql_table_name: {{ facebook_ads_schema._sql }}.campaign ;;
+  sql_table_name: {{ campaign.facebook_ads_schema._sql }}.campaign ;;
 
   dimension: id {
     hidden: yes

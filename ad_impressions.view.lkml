@@ -13,24 +13,28 @@ explore: ad_impressions_base {
   view_label: "Ad Impressions"
 
   join: campaign {
+    from: campaign_fb_adapter
     type: left_outer
     sql_on: ${fact.campaign_id} = ${campaign.id} ;;
     relationship: many_to_one
   }
 
   join: adset {
+    from: adset_fb_adapter
     type: left_outer
     sql_on: ${fact.adset_id} = ${adset.id} ;;
     relationship: many_to_one
   }
 
   join: ad {
+    from: ad_fb_adapter
     type: left_outer
     sql_on: ${fact.ad_id} = ${ad.id} ;;
     relationship: many_to_one
   }
 
   join: actions {
+    from: actions_fb_adapter
     view_label: "Ad Impressions"
     type: left_outer
     sql_on: ${fact.ad_id} = ${actions.ad_id} AND
@@ -54,14 +58,14 @@ view: date_base {
   }
 }
 
-explore: ad_impressions {
+explore: ad_impressions_fb_adapter {
   extends: [ad_impressions_base]
   hidden: yes
-  from: ad_impressions
+  from: ad_impressions_fb_adapter
   view_name: fact
 }
 
-view: ad_impressions {
+view: ad_impressions_fb_adapter {
   extends: [ads_insights_base, date_base, facebook_ads_config]
   sql_table_name: {{ fact.facebook_ads_schema._sql }}.ads_insights ;;
 
@@ -117,14 +121,14 @@ view: age_and_gender_base {
   }
 }
 
-explore: ad_impressions_age_and_gender {
+explore: ad_impressions_age_and_gender_fb_adapter {
   extends: [ad_impressions_base]
   hidden: yes
-  from: ad_impressions_age_and_gender
+  from: ad_impressions_age_and_gender_fb_adapter
   view_name: fact
 
   join: actions {
-    from: actions_age_and_gender
+    from: actions_age_and_gender_fb_adapter
     view_label: "Ad Impressions"
     type: left_outer
     sql_on: ${fact.ad_id} = ${actions.ad_id} AND
@@ -134,8 +138,8 @@ explore: ad_impressions_age_and_gender {
   }
 }
 
-view: ad_impressions_age_and_gender {
-  extends: [ad_impressions, age_and_gender_base]
+view: ad_impressions_age_and_gender_fb_adapter {
+  extends: [ad_impressions_fb_adapter, age_and_gender_base]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_age_and_gender ;;
 }
 
@@ -158,14 +162,14 @@ view: hour_base {
   }
 }
 
-explore: ad_impressions_hour {
+explore: ad_impressions_hour_fb_adapter {
   extends: [ad_impressions_base]
   hidden: yes
-  from: ad_impressions_hour
+  from: ad_impressions_hour_fb_adapter
   view_name: fact
 
   join: actions {
-    from: actions_hour
+    from: actions_hour_fb_adapter
     view_label: "Ad Impressions"
     type: left_outer
     sql_on: ${fact.ad_id} = ${actions.ad_id} AND
@@ -175,8 +179,8 @@ explore: ad_impressions_hour {
   }
 }
 
-view: ad_impressions_hour {
-  extends: [ad_impressions, hour_base]
+view: ad_impressions_hour_fb_adapter {
+  extends: [ad_impressions_fb_adapter, hour_base]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_hour ;;
 }
 
@@ -298,14 +302,14 @@ view: platform_and_device_base {
   }
 }
 
-explore: ad_impressions_platform_and_device {
+explore: ad_impressions_platform_and_device_fb_adapter {
   extends: [ad_impressions_base]
   hidden: yes
-  from: ad_impressions_platform_and_device
+  from: ad_impressions_platform_and_device_fb_adapter
   view_name: fact
 
   join: actions {
-    from: actions_platform_and_device
+    from: actions_platform_and_device_fb_adapter
     view_label: "Ad Impressions"
     type: left_outer
     sql_on: ${fact.ad_id} = ${actions.ad_id} AND
@@ -315,8 +319,8 @@ explore: ad_impressions_platform_and_device {
   }
 }
 
-view: ad_impressions_platform_and_device {
-  extends: [ad_impressions, platform_and_device_base]
+view: ad_impressions_platform_and_device_fb_adapter {
+  extends: [ad_impressions_fb_adapter, platform_and_device_base]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_platform_and_device ;;
 }
 
@@ -346,14 +350,14 @@ view: region_base {
   }
 }
 
-explore: ad_impressions_region {
+explore: ad_impressions_region_fb_adapter {
   extends: [ad_impressions_base]
   hidden: yes
-  from: ad_impressions_region
+  from: ad_impressions_region_fb_adapter
   view_name: fact
 
   join: actions {
-    from: actions_region
+    from: actions_region_fb_adapter
     view_label: "Ad Impressions"
     type: left_outer
     sql_on: ${fact.ad_id} = ${actions.ad_id} AND
@@ -363,18 +367,18 @@ explore: ad_impressions_region {
   }
 }
 
-view: ad_impressions_region {
-  extends: [ad_impressions, region_base]
+view: ad_impressions_region_fb_adapter {
+  extends: [ad_impressions_fb_adapter, region_base]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_region ;;
 }
 
-view: actions {
+view: actions_fb_adapter {
   extends: [ads_insights_actions_base, date_base, facebook_ads_config]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_actions ;;
 }
 
-view: actions_age_and_gender {
-  extends: [actions, age_and_gender_base]
+view: actions_age_and_gender_fb_adapter {
+  extends: [actions_fb_adapter, age_and_gender_base]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_age_and_gender_actions ;;
 
   dimension: age {
@@ -385,8 +389,8 @@ view: actions_age_and_gender {
   }
 }
 
-view: actions_hour {
-  extends: [actions, hour_base]
+view: actions_hour_fb_adapter {
+  extends: [actions_fb_adapter, hour_base]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_hour_actions ;;
 
   dimension: hour {
@@ -394,8 +398,8 @@ view: actions_hour {
   }
 }
 
-view: actions_platform_and_device {
-  extends: [actions, hour_base]
+view: actions_platform_and_device_fb_adapter {
+  extends: [actions_fb_adapter, hour_base]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_platform_and_device_actions ;;
 
   dimension: device_type {
@@ -409,8 +413,8 @@ view: actions_platform_and_device {
   }
 }
 
-view: actions_region {
-  extends: [actions, hour_base]
+view: actions_region_fb_adapter {
+  extends: [actions_fb_adapter, hour_base]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_region_actions ;;
 
   dimension: country {
