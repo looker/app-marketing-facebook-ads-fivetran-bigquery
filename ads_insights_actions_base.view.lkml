@@ -35,30 +35,21 @@ view: ads_insights_actions_base {
       quarter,
       year
     ]
-    sql: ${TABLE}.date ;;
   }
 
   dimension: index {
     hidden: yes
     type: number
-    sql: ${TABLE}.index ;;
   }
 
   dimension: value {
     hidden: yes
     type: number
-    sql: ${TABLE}.value ;;
   }
 
   dimension: offsite_conversion_value {
     hidden: yes
     type: number
-    sql: CASE WHEN (${action_type} = 'offsite_conversion') THEN ${value} ELSE NULL END ;;
+    expression: if(${action_type} = "offsite_conversion", ${value}, null) ;;
   }
-
-  measure: total_value {
-    type: sum
-    sql: ${value} ;;
-  }
-
 }

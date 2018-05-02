@@ -1,15 +1,11 @@
-include: "ad.view"
-include: "ad_impressions_adapter.view"
-include: "ads_insights_actions_base.view"
-include: "ads_insights_age_and_gender.view"
-include: "ads_insights_base.view"
-include: "ads_insights_hour.view"
-include: "ads_insights_platform_and_device.view"
-include: "ads_insights_region.view"
-include: "fb_ad_transformations_base.view"
-include: "period_base.view"
+include: "/app_marketing_analytics_config/facebook_ads_config.view"
 
-explore: ad_impressions {
+include: "ad.view"
+include: "ads_insights_actions_base.view"
+include: "ads_insights_base.view"
+
+explore: ad_impressions_base {
+  extension: required
   hidden: yes
   from: ad_impressions
   view_name: fact
@@ -38,81 +34,370 @@ explore: ad_impressions {
     view_label: "Ad Impressions"
     type: left_outer
     sql_on: ${fact.ad_id} = ${actions.ad_id} AND
-      ${fact.date_date} = ${actions.date_date} AND
-      ${fact.breakdowns} = ${actions.breakdowns};;
+      ${fact._date} = ${actions._date} AND
+      ${fact.breakdown} = ${actions.breakdown};;
     relationship: many_to_one
   }
 }
 
-view: breakdowns_base {
-  extends: [age_and_gender_base, region_base, hour_base, platform_and_device_base]
-  dimension: breakdowns {
-    hidden: yes
-    sql: {% if (fact.impression_device._in_query or fact.platform_position._in_query or fact.platform_position_raw._in_query or fact.publisher_platform_raw._in_query or fact.publisher_platform._in_query) %}
-      CONCAT(CAST(${impression_device} AS STRING),"|", CAST(${platform_position_raw} AS STRING),"|", CAST(${publisher_platform_raw} AS STRING))
-      {% elsif (fact.country._in_query or fact.region._in_query) %}
-      CONCAT(CAST(${country} AS STRING),"|", CAST(${region} AS STRING))
-      {% elsif (fact.age._in_query or fact.gender_raw._in_query or fact.gender._in_query) %}
-      CONCAT(CAST(${age} AS STRING),"|", CAST(${gender_raw} AS STRING))
-      {% elsif (fact.hourly_stats_aggregated_by_audience_time_zone._in_query) %}
-      CAST(${hourly_stats_aggregated_by_audience_time_zone} AS STRING)
-      {% else %}1
-      {% endif %} ;;
-#     expression: {% if (fact.impression_device._in_query or fact.platform_position_raw._in_query or fact.publisher_platform_raw._in_query) %}
-#       concat(${impression_device}, "|", ${platform_position_raw}, "|", ${publisher_platform_raw})
-#       {% elsif (fact.country._in_query or fact.region._in_query) %}
-#       concat(${country} AS STRING), "|", ${region})
-#       {% elsif (fact.age._in_query or fact.gender_raw._in_query) %}
-#       concat(${age} AS STRING), "|", ${gender_raw})
-#       {% elsif (fact.hourly_stats_aggregated_by_audience_time_zone._in_query) %}
-#       ${hourly_stats_aggregated_by_audience_time_zone}
-#       {% else %}1
-#       {% endif %} ;;
-  }
-}
-
-view: ad_impressions {
-  extends: [ads_insights_base, breakdowns_base, period_base, fb_ad_transformations_base, ad_impressions_adapter]
+view: date_base {
+  extension: required
 
   dimension: _date {
     hidden: yes
-    type: date_raw
-    sql: CAST(${TABLE}.date as DATE) ;;
+    type: date_time
   }
+
+  dimension: breakdown {
+    hidden: yes
+    expression: "1" ;;
+  }
+}
+
+explore: ad_impressions {
+  extends: [ad_impressions_base]
+  hidden: yes
+  from: ad_impressions
+  view_name: fact
+}
+
+view: ad_impressions {
+  extends: [ads_insights_base, date_base, facebook_ads_config]
+  sql_table_name: {{ fact.facebook_ads_schema._sql }}.ads_insights ;;
 
   dimension: primary_key {
     hidden: yes
     primary_key: yes
-    expression: concat(${fact.date_date}
+    expression: concat(${_date}
       , "|", ${account_id}
       , "|", ${campaign_id}
       , "|", ${adset_id}
       , "|", ${ad_id}
-      , "|", ${breakdowns}) ;;
+      , "|", ${breakdown}
+    ) ;;
   }
 }
 
+view: age_and_gender_base {
+  extension: required
+
+  dimension: breakdown {
+    hidden: yes
+    expression: concat(${age}
+      ,"|", ${gender_raw}
+    ) ;;
+  }
+  dimension: age {
+    type: string
+  }
+
+  dimension: gender_raw {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.gender ;;
+  }
+
+  dimension: gender {
+    type: string
+    case: {
+      when: {
+        sql: ${gender_raw} = 'male' ;;
+        label: "Male"
+      }
+      when: {
+        sql: ${gender_raw} = 'female' ;;
+        label: "Female"
+      }
+      when: {
+        sql: ${gender_raw} = 'unknown';;
+        label: "Unknown"
+      }
+      else: "Other"
+    }
+  }
+}
+
+explore: ad_impressions_age_and_gender {
+  extends: [ad_impressions_base]
+  hidden: yes
+  from: ad_impressions_age_and_gender
+  view_name: fact
+
+  join: actions {
+    from: actions_age_and_gender
+    view_label: "Ad Impressions"
+    type: left_outer
+    sql_on: ${fact.ad_id} = ${actions.ad_id} AND
+      ${fact._date} = ${actions._date} AND
+      ${fact.breakdown} = ${actions.breakdown};;
+    relationship: many_to_one
+  }
+}
+
+view: ad_impressions_age_and_gender {
+  extends: [ad_impressions, age_and_gender_base]
+  sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_age_and_gender ;;
+}
+
+view: hour_base {
+  extension: required
+
+  dimension: breakdown {
+    hidden: yes
+    expression: ${hourly_stats_aggregated_by_audience_time_zone} ;;
+  }
+
+  dimension: hourly_stats_aggregated_by_audience_time_zone {
+    hidden: yes
+    type: string
+  }
+
+  dimension: hour {
+    type: string
+    expression: substring(${hourly_stats_aggregated_by_audience_time_zone}, 0, 2) ;;
+  }
+}
+
+explore: ad_impressions_hour {
+  extends: [ad_impressions_base]
+  hidden: yes
+  from: ad_impressions_hour
+  view_name: fact
+
+  join: actions {
+    from: actions_hour
+    view_label: "Ad Impressions"
+    type: left_outer
+    sql_on: ${fact.ad_id} = ${actions.ad_id} AND
+      ${fact._date} = ${actions._date} AND
+      ${fact.breakdown} = ${actions.breakdown};;
+    relationship: many_to_one
+  }
+}
+
+view: ad_impressions_hour {
+  extends: [ad_impressions, hour_base]
+  sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_hour ;;
+}
+
+view: platform_and_device_base {
+  extension: required
+
+  dimension: breakdown {
+    hidden: yes
+    expression: concat(${impression_device}
+      ,"|", ${platform_position_raw}
+      ,"|", ${publisher_platform_raw}
+    ) ;;
+  }
+
+  dimension: impression_device {
+    hidden: yes
+    type: string
+  }
+
+  dimension: device_type {
+    type: string
+    case: {
+      when: {
+        sql: ${impression_device} = 'desktop' ;;
+        label: "Desktop"
+      }
+      when: {
+        sql: ${impression_device} = 'iphone' OR ${impression_device} = 'android_smartphone' ;;
+        label: "Mobile"
+      }
+      when: {
+        sql: ${impression_device} = 'ipad'  OR ${impression_device} = 'android_tablet' ;;
+        label: "Tablet"
+      }
+      else: "Other"
+    }
+  }
+
+  dimension: platform_position_raw {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.platform_position ;;
+  }
+
+  dimension: platform_position {
+    type: string
+    case: {
+      when: {
+        sql: ${platform_position_raw} = 'feed' AND ${publisher_platform_raw} = 'instagram' ;;
+        label: "Feed"
+      }
+      when: {
+        sql: ${platform_position_raw} = 'feed' ;;
+        label: "News Feed"
+      }
+      when: {
+        sql: ${platform_position_raw} = 'an_classic' ;;
+        label: "Classic"
+      }
+      when: {
+        sql: ${platform_position_raw} = 'all_placements' ;;
+        label: "All"
+      }
+      when: {
+        sql: ${platform_position_raw} = 'instant_article' ;;
+        label: "Instant Article"
+      }
+      when: {
+        sql: ${platform_position_raw} = 'right_hand_column' ;;
+        label: "Right Column"
+      }
+      when: {
+        sql: ${platform_position_raw} = 'rewarded_video' ;;
+        label: "Rewarded Video"
+      }
+      when: {
+        sql: ${platform_position_raw} = 'suggested_video' ;;
+        label: "Suggested Video"
+      }
+      when: {
+        sql: ${platform_position_raw} = 'instream_video' ;;
+        label: "InStream Video"
+      }
+      when: {
+        sql: ${platform_position_raw} = 'messenger_inbox' ;;
+        label: "Messenger Home"
+      }
+      else: "Other"
+    }
+  }
+
+  dimension: publisher_platform_raw {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.publisher_platform ;;
+  }
+
+  dimension: publisher_platform {
+    type: string
+    case: {
+      when: {
+        sql: ${publisher_platform_raw} = 'facebook' ;;
+        label: "Facebook"
+      }
+      when: {
+        sql: ${publisher_platform_raw} = 'instagram' ;;
+        label: "Instagram"
+      }
+      when: {
+        sql: ${publisher_platform_raw} = 'audience_network';;
+        label: "Audience Network"
+      }
+      when: {
+        sql: ${publisher_platform_raw} = 'messenger';;
+        label: "Messenger"
+      }
+      else: "Other"
+    }
+  }
+}
+
+explore: ad_impressions_platform_and_device {
+  extends: [ad_impressions_base]
+  hidden: yes
+  from: ad_impressions_platform_and_device
+  view_name: fact
+
+  join: actions {
+    from: actions_platform_and_device
+    view_label: "Ad Impressions"
+    type: left_outer
+    sql_on: ${fact.ad_id} = ${actions.ad_id} AND
+      ${fact._date} = ${actions._date} AND
+      ${fact.breakdown} = ${actions.breakdown};;
+    relationship: many_to_one
+  }
+}
+
+view: ad_impressions_platform_and_device {
+  extends: [ad_impressions, platform_and_device_base]
+  sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_platform_and_device ;;
+}
+
+view: region_base {
+  extension: required
+
+  dimension: breakdown {
+    hidden: yes
+    expression: concat(${country}
+      ,"|", ${region}
+    ) ;;
+  }
+
+  dimension: country {
+    type: string
+    map_layer_name: countries
+  }
+
+  dimension: region {
+    type: string
+  }
+
+  dimension: state {
+    type: string
+    map_layer_name: us_states
+    expression: if(${country} = "US", ${region}, null) ;;
+  }
+}
+
+explore: ad_impressions_region {
+  extends: [ad_impressions_base]
+  hidden: yes
+  from: ad_impressions_region
+  view_name: fact
+
+  join: actions {
+    from: actions_region
+    view_label: "Ad Impressions"
+    type: left_outer
+    sql_on: ${fact.ad_id} = ${actions.ad_id} AND
+      ${fact._date} = ${actions._date} AND
+      ${fact.breakdown} = ${actions.breakdown};;
+    relationship: many_to_one
+  }
+}
+
+view: ad_impressions_region {
+  extends: [ad_impressions, region_base]
+  sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_region ;;
+}
+
 view: actions {
-  extends: [ads_insights_actions_base, breakdowns_base, ad_impressions_actions_adapter]
+  extends: [ads_insights_actions_base, date_base, facebook_ads_config]
+  sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_actions ;;
+}
+
+view: actions_age_and_gender {
+  extends: [actions, age_and_gender_base]
+  sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_age_and_gender_actions ;;
 
   dimension: age {
-    hidden: yes
-  }
-  dimension: country {
-    hidden: yes
-  }
-  dimension: region {
-    hidden: yes
-  }
-  dimension: state {
     hidden: yes
   }
   dimension: gender {
     hidden: yes
   }
+}
+
+view: actions_hour {
+  extends: [actions, hour_base]
+  sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_hour_actions ;;
+
   dimension: hour {
     hidden: yes
   }
+}
+
+view: actions_platform_and_device {
+  extends: [actions, hour_base]
+  sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_platform_and_device_actions ;;
+
   dimension: device_type {
     hidden: yes
   }
@@ -120,6 +405,21 @@ view: actions {
     hidden: yes
   }
   dimension: publisher_platform {
+    hidden: yes
+  }
+}
+
+view: actions_region {
+  extends: [actions, hour_base]
+  sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_region_actions ;;
+
+  dimension: country {
+    hidden: yes
+  }
+  dimension: region {
+    hidden: yes
+  }
+  dimension: state {
     hidden: yes
   }
 }

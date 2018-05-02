@@ -1,4 +1,5 @@
-include: "ad_adapter.view"
+include: "/app_marketing_analytics_config/facebook_ads_config.view"
+
 include: "adset.view"
 include: "fivetran_base.view"
 
@@ -19,7 +20,8 @@ explore: ad {
 }
 
 view: ad {
-  extends: [fivetran_base]
+  extends: [fivetran_base, facebook_ads_config]
+  sql_table_name: {{ facebook_ads_schema._sql }}.ad ;;
 
   dimension: id {
     hidden: yes
@@ -35,10 +37,5 @@ view: ad {
   dimension: name {
     hidden: yes
     type: string
-  }
-
-  measure: count {
-    hidden: yes
-    type: count
   }
 }

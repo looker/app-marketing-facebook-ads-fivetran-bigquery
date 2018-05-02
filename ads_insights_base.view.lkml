@@ -1,8 +1,9 @@
+include: "ad_transformations_base.view"
 include: "fivetran_base.view"
 
 view: ads_insights_base {
   extension: required
-  extends: [fivetran_base]
+  extends: [fivetran_base, ad_transformations_base]
 
   dimension: account_id {
     hidden: yes

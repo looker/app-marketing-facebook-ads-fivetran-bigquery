@@ -1,5 +1,6 @@
+include: "/app_marketing_analytics_config/facebook_ads_config.view"
+
 include: "account.view"
-include: "campaign_adapter.view"
 include: "fivetran_base.view"
 
 explore: campaign {
@@ -12,7 +13,8 @@ explore: campaign {
 }
 
 view: campaign {
-  extends: [fivetran_base, campaign_adapter]
+  extends: [fivetran_base, facebook_ads_config]
+  sql_table_name: {{ facebook_ads_schema._sql }}.campaign ;;
 
   dimension: id {
     hidden: yes
@@ -28,10 +30,5 @@ view: campaign {
   dimension: name {
     hidden: yes
     type: string
-  }
-
-  measure: count {
-    hidden: yes
-    type: count
   }
 }
