@@ -351,10 +351,10 @@ view: region_base {
   }
 }
 
-explore: ad_impressions_region_fb_adapter {
+explore: ad_impressions_geo_fb_adapter {
   extends: [ad_impressions_base]
   hidden: yes
-  from: ad_impressions_region_fb_adapter
+  from: ad_impressions_geo_fb_adapter
   view_name: fact
 
   join: actions {
@@ -368,7 +368,7 @@ explore: ad_impressions_region_fb_adapter {
   }
 }
 
-view: ad_impressions_region_fb_adapter {
+view: ad_impressions_geo_fb_adapter {
   extends: [ad_impressions_fb_adapter, region_base]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_region ;;
 }
