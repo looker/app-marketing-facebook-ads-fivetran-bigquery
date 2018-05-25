@@ -1,4 +1,4 @@
-view: ad_transformations_base {
+view: ad_transformations_base_fb_adapter {
   extension: required
 
   dimension: conversions {

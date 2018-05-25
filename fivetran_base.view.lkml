@@ -1,4 +1,4 @@
-view: fivetran_base {
+view: fivetran_base_fb_adapter {
   extension: required
 
   dimension: _fivetran_synced {

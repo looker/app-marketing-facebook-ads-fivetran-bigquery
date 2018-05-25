@@ -67,7 +67,7 @@ explore: ad_impressions_fb_adapter {
 }
 
 view: ad_impressions_fb_adapter {
-  extends: [ads_insights_base, date_base_fb_adapter, facebook_ads_config]
+  extends: [ads_insights_base_fb_adapter, date_base_fb_adapter, facebook_ads_config]
   sql_table_name: {{ fact.facebook_ads_schema._sql }}.ads_insights ;;
 
   dimension: primary_key {
@@ -83,7 +83,7 @@ view: ad_impressions_fb_adapter {
   }
 }
 
-view: age_and_gender_base {
+view: age_and_gender_base_fb_adapter {
   extension: required
 
   dimension: breakdown {
@@ -140,11 +140,11 @@ explore: ad_impressions_age_and_gender_fb_adapter {
 }
 
 view: ad_impressions_age_and_gender_fb_adapter {
-  extends: [ad_impressions_fb_adapter, age_and_gender_base]
+  extends: [ad_impressions_fb_adapter, age_and_gender_base_fb_adapter]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_age_and_gender ;;
 }
 
-view: hour_base {
+view: hour_base_fb_adapter {
   extension: required
 
   dimension: breakdown {
@@ -181,11 +181,11 @@ explore: ad_impressions_hour_fb_adapter {
 }
 
 view: ad_impressions_hour_fb_adapter {
-  extends: [ad_impressions_fb_adapter, hour_base]
+  extends: [ad_impressions_fb_adapter, hour_base_fb_adapter]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_hour ;;
 }
 
-view: platform_and_device_base {
+view: platform_and_device_base_fb_adapter {
   extension: required
 
   dimension: breakdown {
@@ -321,11 +321,11 @@ explore: ad_impressions_platform_and_device_fb_adapter {
 }
 
 view: ad_impressions_platform_and_device_fb_adapter {
-  extends: [ad_impressions_fb_adapter, platform_and_device_base]
+  extends: [ad_impressions_fb_adapter, platform_and_device_base_fb_adapter]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_platform_and_device ;;
 }
 
-view: region_base {
+view: region_base_fb_adapter {
   extension: required
 
   dimension: breakdown {
@@ -369,17 +369,17 @@ explore: ad_impressions_geo_fb_adapter {
 }
 
 view: ad_impressions_geo_fb_adapter {
-  extends: [ad_impressions_fb_adapter, region_base]
+  extends: [ad_impressions_fb_adapter, region_base_fb_adapter]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_region ;;
 }
 
 view: actions_fb_adapter {
-  extends: [ads_insights_actions_base, date_base_fb_adapter, facebook_ads_config]
+  extends: [ads_insights_actions_base_fb_adapter, date_base_fb_adapter, facebook_ads_config]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_actions ;;
 }
 
 view: actions_age_and_gender_fb_adapter {
-  extends: [actions_fb_adapter, age_and_gender_base]
+  extends: [actions_fb_adapter, age_and_gender_base_fb_adapter]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_age_and_gender_actions ;;
 
   dimension: age {
@@ -391,7 +391,7 @@ view: actions_age_and_gender_fb_adapter {
 }
 
 view: actions_hour_fb_adapter {
-  extends: [actions_fb_adapter, hour_base]
+  extends: [actions_fb_adapter, hour_base_fb_adapter]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_hour_actions ;;
 
   dimension: hour {
@@ -400,7 +400,7 @@ view: actions_hour_fb_adapter {
 }
 
 view: actions_platform_and_device_fb_adapter {
-  extends: [actions_fb_adapter, hour_base]
+  extends: [actions_fb_adapter, hour_base_fb_adapter]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_platform_and_device_actions ;;
 
   dimension: device_type {
@@ -415,7 +415,7 @@ view: actions_platform_and_device_fb_adapter {
 }
 
 view: actions_region_fb_adapter {
-  extends: [actions_fb_adapter, hour_base]
+  extends: [actions_fb_adapter, hour_base_fb_adapter]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_region_actions ;;
 
   dimension: country {

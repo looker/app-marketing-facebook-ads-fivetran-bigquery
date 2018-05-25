@@ -24,7 +24,7 @@ explore: ad_fb_adapter {
 }
 
 view: ad_fb_adapter {
-  extends: [fivetran_base, facebook_ads_config]
+  extends: [fivetran_base_fb_adapter, facebook_ads_config]
   sql_table_name: {{ ad.facebook_ads_schema._sql }}.ad ;;
 
   dimension: id {

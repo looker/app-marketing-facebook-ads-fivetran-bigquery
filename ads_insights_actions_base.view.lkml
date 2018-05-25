@@ -1,8 +1,8 @@
 include: "fivetran_base.view"
 
-view: ads_insights_actions_base {
+view: ads_insights_actions_base_fb_adapter {
   extension: required
-  extends: [fivetran_base]
+  extends: [fivetran_base_fb_adapter]
 
   dimension: _1_d_view {
     hidden: yes

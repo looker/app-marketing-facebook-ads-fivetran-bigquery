@@ -17,7 +17,7 @@ explore: adset_fb_adapter {
 }
 
 view: adset_fb_adapter {
-  extends: [fivetran_base, facebook_ads_config]
+  extends: [fivetran_base_fb_adapter, facebook_ads_config]
   sql_table_name: {{ adset.facebook_ads_schema._sql }}.adset ;;
 
   dimension: id {
