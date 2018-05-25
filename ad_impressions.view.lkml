@@ -4,7 +4,7 @@ include: "ad.view"
 include: "ads_insights_actions_base.view"
 include: "ads_insights_base.view"
 
-explore: ad_impressions_base {
+explore: ad_impressions_base_fb_adapter {
   extension: required
   hidden: yes
   from: ad_impressions
@@ -44,7 +44,7 @@ explore: ad_impressions_base {
   }
 }
 
-view: date_base {
+view: date_base_fb_adapter {
   extension: required
 
   dimension: _date {
@@ -60,14 +60,14 @@ view: date_base {
 }
 
 explore: ad_impressions_fb_adapter {
-  extends: [ad_impressions_base]
+  extends: [ad_impressions_base_fb_adapter]
   hidden: yes
   from: ad_impressions_fb_adapter
   view_name: fact
 }
 
 view: ad_impressions_fb_adapter {
-  extends: [ads_insights_base, date_base, facebook_ads_config]
+  extends: [ads_insights_base, date_base_fb_adapter, facebook_ads_config]
   sql_table_name: {{ fact.facebook_ads_schema._sql }}.ads_insights ;;
 
   dimension: primary_key {
@@ -123,7 +123,7 @@ view: age_and_gender_base {
 }
 
 explore: ad_impressions_age_and_gender_fb_adapter {
-  extends: [ad_impressions_base]
+  extends: [ad_impressions_base_fb_adapter]
   hidden: yes
   from: ad_impressions_age_and_gender_fb_adapter
   view_name: fact
@@ -164,7 +164,7 @@ view: hour_base {
 }
 
 explore: ad_impressions_hour_fb_adapter {
-  extends: [ad_impressions_base]
+  extends: [ad_impressions_base_fb_adapter]
   hidden: yes
   from: ad_impressions_hour_fb_adapter
   view_name: fact
@@ -304,7 +304,7 @@ view: platform_and_device_base {
 }
 
 explore: ad_impressions_platform_and_device_fb_adapter {
-  extends: [ad_impressions_base]
+  extends: [ad_impressions_base_fb_adapter]
   hidden: yes
   from: ad_impressions_platform_and_device_fb_adapter
   view_name: fact
@@ -352,7 +352,7 @@ view: region_base {
 }
 
 explore: ad_impressions_geo_fb_adapter {
-  extends: [ad_impressions_base]
+  extends: [ad_impressions_base_fb_adapter]
   hidden: yes
   from: ad_impressions_geo_fb_adapter
   view_name: fact
@@ -374,7 +374,7 @@ view: ad_impressions_geo_fb_adapter {
 }
 
 view: actions_fb_adapter {
-  extends: [ads_insights_actions_base, date_base, facebook_ads_config]
+  extends: [ads_insights_actions_base, date_base_fb_adapter, facebook_ads_config]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_actions ;;
 }
 
