@@ -50,6 +50,6 @@ view: ads_insights_actions_base {
   dimension: offsite_conversion_value {
     hidden: yes
     type: number
-    expression: if(${action_type} = "offsite_conversion", ${value}, null) ;;
+    sql: if(${action_type} = "offsite_conversion", ${value}, null) ;;
   }
 }

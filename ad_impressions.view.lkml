@@ -55,7 +55,7 @@ view: date_base_fb_adapter {
 
   dimension: breakdown {
     hidden: yes
-    expression: "1" ;;
+    sql: "1" ;;
   }
 }
 
@@ -73,7 +73,7 @@ view: ad_impressions_fb_adapter {
   dimension: primary_key {
     hidden: yes
     primary_key: yes
-    expression: concat(${_date}
+    sql: concat(${_date}
       , "|", ${account_id}
       , "|", ${campaign_id}
       , "|", ${adset_id}
@@ -88,7 +88,7 @@ view: age_and_gender_base {
 
   dimension: breakdown {
     hidden: yes
-    expression: concat(${age}
+    sql: concat(${age}
       ,"|", ${gender_raw}
     ) ;;
   }
@@ -149,7 +149,7 @@ view: hour_base {
 
   dimension: breakdown {
     hidden: yes
-    expression: ${hourly_stats_aggregated_by_audience_time_zone} ;;
+    sql: ${hourly_stats_aggregated_by_audience_time_zone} ;;
   }
 
   dimension: hourly_stats_aggregated_by_audience_time_zone {
@@ -159,7 +159,7 @@ view: hour_base {
 
   dimension: hour {
     type: string
-    expression: substring(${hourly_stats_aggregated_by_audience_time_zone}, 0, 2) ;;
+    sql: substring(${hourly_stats_aggregated_by_audience_time_zone}, 0, 2) ;;
   }
 }
 
@@ -190,7 +190,7 @@ view: platform_and_device_base {
 
   dimension: breakdown {
     hidden: yes
-    expression: concat(${impression_device}
+    sql: concat(${impression_device}
       ,"|", ${platform_position_raw}
       ,"|", ${publisher_platform_raw}
     ) ;;
@@ -330,7 +330,7 @@ view: region_base {
 
   dimension: breakdown {
     hidden: yes
-    expression: concat(${country}
+    sql: concat(${country}
       ,"|", ${region}
     ) ;;
   }
@@ -347,7 +347,7 @@ view: region_base {
   dimension: state {
     type: string
     map_layer_name: us_states
-    expression: if(${country} = "US", ${region}, null) ;;
+    sql: if(${country} = "US", ${region}, null) ;;
   }
 }
 
