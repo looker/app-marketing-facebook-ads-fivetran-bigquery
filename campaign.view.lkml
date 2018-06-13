@@ -32,6 +32,7 @@ view: campaign_fb_adapter {
   }
 
   dimension: name {
+    label: "Campaign Name"
     hidden: yes
     type: string
   }
