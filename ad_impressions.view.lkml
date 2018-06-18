@@ -400,7 +400,7 @@ view: actions_hour_fb_adapter {
 }
 
 view: actions_platform_and_device_fb_adapter {
-  extends: [actions_fb_adapter, hour_base_fb_adapter]
+  extends: [actions_fb_adapter, platform_and_device_base_fb_adapter]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_platform_and_device_actions ;;
 
   dimension: device_type {
