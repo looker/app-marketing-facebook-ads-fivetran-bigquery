@@ -4,6 +4,16 @@ view: ads_insights_actions_base_fb_adapter {
   extension: required
   extends: [fivetran_base_fb_adapter]
 
+  dimension: primary_key {
+    hidden: yes
+    primary_key: yes
+    sql: concat(CAST(${_date} as STRING)
+      , "|", ${ad_id}
+      , "|", ${action_type}
+      , "|", ${breakdown}
+    ) ;;
+  }
+
   dimension: _1_d_view {
     hidden: yes
     type: number
