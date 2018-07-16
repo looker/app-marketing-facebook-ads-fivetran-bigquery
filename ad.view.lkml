@@ -2,6 +2,7 @@ include: "adset.view"
 include: "fivetran_base.view"
 
 explore: ad_fb_adapter {
+  extension: required
   view_name: ad
   from: ad_fb_adapter
   hidden: yes
@@ -22,6 +23,7 @@ explore: ad_fb_adapter {
 }
 
 view: ad_fb_adapter {
+  extension: required
   extends: [fivetran_base_fb_adapter, facebook_ads_config]
   sql_table_name: {{ ad.facebook_ads_schema._sql }}.ad ;;
 
