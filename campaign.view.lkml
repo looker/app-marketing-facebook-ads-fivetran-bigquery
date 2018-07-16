@@ -1,5 +1,3 @@
-include: "/app_marketing_analytics_config/facebook_ads_config.view"
-
 include: "account.view"
 include: "fivetran_base.view"
 
