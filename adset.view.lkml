@@ -2,7 +2,6 @@ include: "campaign.view"
 include: "fivetran_base.view"
 
 explore: adset_fb_adapter {
-  extension: required
   view_name: adset
   from: adset_fb_adapter
   hidden: yes
@@ -16,7 +15,6 @@ explore: adset_fb_adapter {
 }
 
 view: adset_fb_adapter {
-  extension: required
   extends: [fivetran_base_fb_adapter, facebook_ads_config]
   sql_table_name: {{ adset.facebook_ads_schema._sql }}.adset ;;
 

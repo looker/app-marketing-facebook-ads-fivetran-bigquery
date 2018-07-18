@@ -59,7 +59,6 @@ view: date_base_fb_adapter {
 }
 
 explore: ad_impressions_fb_adapter {
-  extension: required
   extends: [ad_impressions_base_fb_adapter]
   hidden: yes
   from: ad_impressions_fb_adapter
@@ -67,7 +66,6 @@ explore: ad_impressions_fb_adapter {
 }
 
 view: ad_impressions_fb_adapter {
-  extension: required
   extends: [ads_insights_base_fb_adapter, date_base_fb_adapter, facebook_ads_config]
   sql_table_name: {{ fact.facebook_ads_schema._sql }}.ads_insights ;;
 
@@ -85,7 +83,6 @@ view: ad_impressions_fb_adapter {
 }
 
 view: age_and_gender_base_fb_adapter {
-  extension: required
 
   dimension: breakdown {
     hidden: yes
@@ -124,7 +121,6 @@ view: age_and_gender_base_fb_adapter {
 }
 
 explore: ad_impressions_age_and_gender_fb_adapter {
-  extension: required
   extends: [ad_impressions_base_fb_adapter]
   hidden: yes
   from: ad_impressions_age_and_gender_fb_adapter
@@ -143,7 +139,6 @@ explore: ad_impressions_age_and_gender_fb_adapter {
 }
 
 view: ad_impressions_age_and_gender_fb_adapter {
-  extension: required
   extends: [ad_impressions_fb_adapter, age_and_gender_base_fb_adapter]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_age_and_gender ;;
 }
@@ -168,7 +163,6 @@ view: hour_base_fb_adapter {
 }
 
 explore: ad_impressions_hour_fb_adapter {
-  extension: required
   extends: [ad_impressions_base_fb_adapter]
   hidden: yes
   from: ad_impressions_hour_fb_adapter
@@ -187,7 +181,6 @@ explore: ad_impressions_hour_fb_adapter {
 }
 
 view: ad_impressions_hour_fb_adapter {
-  extension: required
   extends: [ad_impressions_fb_adapter, hour_base_fb_adapter]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_hour ;;
 }
@@ -311,7 +304,6 @@ view: platform_and_device_base_fb_adapter {
 }
 
 explore: ad_impressions_platform_and_device_fb_adapter {
-  extension: required
   extends: [ad_impressions_base_fb_adapter]
   hidden: yes
   from: ad_impressions_platform_and_device_fb_adapter
@@ -330,7 +322,6 @@ explore: ad_impressions_platform_and_device_fb_adapter {
 }
 
 view: ad_impressions_platform_and_device_fb_adapter {
-  extension: required
   extends: [ad_impressions_fb_adapter, platform_and_device_base_fb_adapter]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_platform_and_device ;;
 }
@@ -362,7 +353,6 @@ view: region_base_fb_adapter {
 }
 
 explore: ad_impressions_geo_fb_adapter {
-  extension: required
   extends: [ad_impressions_base_fb_adapter]
   hidden: yes
   from: ad_impressions_geo_fb_adapter
@@ -381,19 +371,16 @@ explore: ad_impressions_geo_fb_adapter {
 }
 
 view: ad_impressions_geo_fb_adapter {
-  extension: required
   extends: [ad_impressions_fb_adapter, region_base_fb_adapter]
   sql_table_name:  {{ fact.facebook_ads_schema._sql }}.ads_insights_region ;;
 }
 
 view: actions_fb_adapter {
-  extension: required
   extends: [ads_insights_actions_base_fb_adapter, date_base_fb_adapter, facebook_ads_config]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_actions ;;
 }
 
 view: actions_age_and_gender_fb_adapter {
-  extension: required
   extends: [actions_fb_adapter, age_and_gender_base_fb_adapter]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_age_and_gender_actions ;;
 
@@ -406,7 +393,6 @@ view: actions_age_and_gender_fb_adapter {
 }
 
 view: actions_hour_fb_adapter {
-  extension: required
   extends: [actions_fb_adapter, hour_base_fb_adapter]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_hour_actions ;;
 
@@ -416,7 +402,6 @@ view: actions_hour_fb_adapter {
 }
 
 view: actions_platform_and_device_fb_adapter {
-  extension: required
   extends: [actions_fb_adapter, platform_and_device_base_fb_adapter]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_platform_and_device_actions ;;
 
@@ -432,7 +417,6 @@ view: actions_platform_and_device_fb_adapter {
 }
 
 view: actions_region_fb_adapter {
-  extension: required
   extends: [actions_fb_adapter, region_base_fb_adapter]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_region_actions ;;
 

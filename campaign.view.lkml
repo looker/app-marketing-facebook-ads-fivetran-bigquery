@@ -2,7 +2,6 @@ include: "account.view"
 include: "fivetran_base.view"
 
 explore: campaign_fb_adapter {
-  extension: required
   view_name: campaign
   from: campaign_fb_adapter
   hidden: yes
@@ -16,7 +15,6 @@ explore: campaign_fb_adapter {
 }
 
 view: campaign_fb_adapter {
-  extension: required
   extends: [fivetran_base_fb_adapter, facebook_ads_config]
   sql_table_name: {{ campaign.facebook_ads_schema._sql }}.campaign ;;
 
