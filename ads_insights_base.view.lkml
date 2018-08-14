@@ -10,6 +10,11 @@ view: ads_insights_base_fb_adapter {
     type: string
   }
 
+  dimension: account_id_string {
+    hidden: yes
+    sql: CAST(${account_id} AS STRING) ;;
+  }
+
   dimension: account_name {
     type: string
   }
@@ -28,6 +33,11 @@ view: ads_insights_base_fb_adapter {
     type: string
   }
 
+  dimension: adset_id_string {
+    hidden: yes
+    sql: CAST(${adset_id} AS STRING) ;;
+  }
+
   dimension: adset_name {
     type: string
   }
@@ -35,6 +45,11 @@ view: ads_insights_base_fb_adapter {
   dimension: campaign_id {
     hidden: yes
     type: string
+  }
+
+  dimension: campaign_id_string {
+    hidden: yes
+    sql: CAST(${campaign_id} AS STRING) ;;
   }
 
   dimension: campaign_name {
