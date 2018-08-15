@@ -31,9 +31,8 @@ view: campaign_fb_adapter {
   }
 
   dimension: id {
-    primary_key: yes
-    type: number
-    sql: ${TABLE}.id ;;
+    hidden: yes
+    sql: CAST(${TABLE}.id AS STRING) ;;
   }
 
   dimension: account_id {
@@ -101,6 +100,7 @@ view: campaign_fb_adapter {
 
   dimension: status_active {
     hidden: yes
+    type: yesno
     sql: ${effective_status} = "ACTIVE" ;;
   }
 

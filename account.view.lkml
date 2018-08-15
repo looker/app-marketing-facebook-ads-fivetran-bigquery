@@ -24,8 +24,7 @@ view: account_fb_adapter {
 
   dimension: id {
     hidden: yes
-    primary_key: yes
-    type: string
+    sql: CAST(${TABLE}.id AS STRING) ;;
   }
 
   dimension: account_status {
@@ -35,7 +34,7 @@ view: account_fb_adapter {
 
   dimension: status_active {
     hidden: yes
-    type: string
+    type: yesno
     sql: ${account_status} = "ACTIVE" ;;
   }
 

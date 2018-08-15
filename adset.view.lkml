@@ -32,9 +32,7 @@ view: adset_fb_adapter {
 
   dimension: id {
     hidden: yes
-    primary_key: yes
-    type: number
-    sql: ${TABLE}.id ;;
+    sql: CAST(${TABLE}.id AS STRING) ;;
   }
 
   dimension: account_id {
@@ -108,7 +106,7 @@ view: adset_fb_adapter {
 
   dimension: status_active {
     hidden: yes
-    type: string
+    type: yesno
     sql: ${effective_status} = "ACTIVE" ;;
   }
 
