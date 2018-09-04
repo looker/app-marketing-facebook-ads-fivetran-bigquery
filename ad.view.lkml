@@ -26,11 +26,11 @@ view: ad_fb_adapter {
   derived_table: {
     sql:
     (
-      SELECT ad_history.* FROM `{{ ad.facebook_ads_schema._sql }}.ad_history` as ad_history
+      SELECT ad_history.* FROM `{{ ad.facebook_ad_account_schema._sql }}.ad_history` as ad_history
       INNER JOIN (
         SELECT
         id, max(updated_time) as max_update_time
-        FROM `{{ ad.facebook_ads_schema._sql }}.ad_history`
+        FROM `{{ ad.facebook_ad_account_schema._sql }}.ad_history`
         GROUP BY id) max_ad_history
       ON max_ad_history.id = ad_history.id
       AND max_ad_history.max_update_time = ad_history.updated_time

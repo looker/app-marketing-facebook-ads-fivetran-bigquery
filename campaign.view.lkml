@@ -19,11 +19,11 @@ view: campaign_fb_adapter {
   derived_table: {
     sql:
   (
-    SELECT campaign_history.* FROM `{{ campaign.facebook_ads_schema._sql }}.campaign_history` as campaign_history
+    SELECT campaign_history.* FROM `{{ campaign.facebook_ad_account_schema._sql }}.campaign_history` as campaign_history
     INNER JOIN (
       SELECT
       id, max(updated_time) as max_update_time
-      FROM `{{ campaign.facebook_ads_schema._sql }}.campaign_history`
+      FROM `{{ campaign.facebook_ad_account_schema._sql }}.campaign_history`
       GROUP BY id) max_campaign_history
     ON max_campaign_history.id = campaign_history.id
     AND max_campaign_history.max_update_time = campaign_history.updated_time

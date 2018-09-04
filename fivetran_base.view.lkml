@@ -5,4 +5,9 @@ view: fivetran_base_fb_adapter {
     hidden: yes
     type: date_time
   }
+
+  dimension: facebook_ad_account_schema {
+    hidden: yes
+    sql:{{ facebook_ads_schema._sql }};;
+  }
 }

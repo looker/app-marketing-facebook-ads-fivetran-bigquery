@@ -11,11 +11,11 @@ view: account_fb_adapter {
   derived_table: {
     sql:
     (
-      SELECT account_history.* FROM `{{ account.facebook_ads_schema._sql }}.account_history` as account_history
+      SELECT account_history.* FROM `{{ account.facebook_ad_account_schema._sql }}.account_history` as account_history
       INNER JOIN (
         SELECT
         id, max(updated_time) as max_update_time
-        FROM `{{ account.facebook_ads_schema._sql }}.account_history`
+        FROM `{{ account.facebook_ad_account_schema._sql }}.account_history`
         GROUP BY id) max_account_history
       ON max_account_history.id = account_history.id
       AND max_account_history.max_update_time = account_history.updated_time
