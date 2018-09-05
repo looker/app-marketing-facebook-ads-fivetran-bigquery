@@ -72,7 +72,6 @@ view: account_fb_adapter {
   }
 
   dimension: name {
-    hidden: yes
     type: string
   }
 
