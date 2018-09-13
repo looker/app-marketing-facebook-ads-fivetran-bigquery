@@ -7,8 +7,15 @@ explore: ad_impressions_base_fb_adapter {
   hidden: yes
   from: ad_impressions
   view_name: fact
-  label: "Ad Impressions"
-  view_label: "Ad Impressions"
+  label: "Impressions"
+  view_label: "Impressions"
+
+  join: account {
+    from: account_fb_adapter
+    type: left_outer
+    sql_on: ${fact.account_id} = ${account.id} ;;
+    relationship: many_to_one
+  }
 
   join: campaign {
     from: campaign_fb_adapter
@@ -40,7 +47,7 @@ explore: ad_impressions_base_fb_adapter {
 
   join: actions {
     from: actions_fb_adapter
-    view_label: "Ad Impressions"
+    view_label: "Impressions"
     type: left_outer
     sql_on: ${fact.ad_id} = ${actions.ad_id} AND
       ${fact._date} = ${actions._date} AND
@@ -135,7 +142,7 @@ explore: ad_impressions_age_and_gender_fb_adapter {
 
   join: actions {
     from: actions_age_and_gender_fb_adapter
-    view_label: "Ad Impressions"
+    view_label: "Impressions"
     type: left_outer
     sql_on: ${fact.ad_id} = ${actions.ad_id} AND
       ${fact._date} = ${actions._date} AND
@@ -177,7 +184,7 @@ explore: ad_impressions_hour_fb_adapter {
 
   join: actions {
     from: actions_hour_fb_adapter
-    view_label: "Ad Impressions"
+    view_label: "Impressions"
     type: left_outer
     sql_on: ${fact.ad_id} = ${actions.ad_id} AND
       ${fact._date} = ${actions._date} AND
@@ -318,7 +325,7 @@ explore: ad_impressions_platform_and_device_fb_adapter {
 
   join: actions {
     from: actions_platform_and_device_fb_adapter
-    view_label: "Ad Impressions"
+    view_label: "Impressions"
     type: left_outer
     sql_on: ${fact.ad_id} = ${actions.ad_id} AND
       ${fact._date} = ${actions._date} AND
@@ -367,7 +374,7 @@ explore: ad_impressions_geo_fb_adapter {
 
   join: actions {
     from: actions_region_fb_adapter
-    view_label: "Ad Impressions"
+    view_label: "Impressions"
     type: left_outer
     sql_on: ${fact.ad_id} = ${actions.ad_id} AND
       ${fact._date} = ${actions._date} AND

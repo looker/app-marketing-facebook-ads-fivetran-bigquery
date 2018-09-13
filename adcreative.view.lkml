@@ -26,6 +26,13 @@ explore: adcreative_fb_adapter {
     sql_on: ${ad.campaign_id} = ${campaign.id} ;;
     relationship: many_to_one
   }
+
+  join: account {
+    from: account_fb_adapter
+    type: left_outer
+    sql_on: ${ad.account_id} = ${account.id} ;;
+    relationship: many_to_one
+  }
 }
 
 view: adcreative_fb_adapter {

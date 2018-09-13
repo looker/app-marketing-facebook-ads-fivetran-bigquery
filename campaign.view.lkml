@@ -22,11 +22,11 @@ view: campaign_fb_adapter {
     SELECT campaign_history.* FROM `{{ campaign.facebook_ad_account_schema._sql }}.campaign_history` as campaign_history
     INNER JOIN (
       SELECT
-      id, max(updated_time) as max_update_time
+      id, max(_fivetran_synced) as max_fivetran_synced
       FROM `{{ campaign.facebook_ad_account_schema._sql }}.campaign_history`
       GROUP BY id) max_campaign_history
     ON max_campaign_history.id = campaign_history.id
-    AND max_campaign_history.max_update_time = campaign_history.updated_time
+    AND max_campaign_history.max_fivetran_synced = campaign_history._fivetran_synced
   ) ;;
   }
 
@@ -117,11 +117,13 @@ view: campaign_fb_adapter {
   }
 
   dimension: name {
+    hidden: yes
     type: string
     sql: ${TABLE}.name ;;
   }
 
   dimension: objective {
+    hidden: yes
     type: string
     sql: ${TABLE}.objective ;;
   }

@@ -16,7 +16,14 @@ explore: ad_fb_adapter {
   join: campaign {
     from: campaign_fb_adapter
     type: left_outer
-    sql_on: ${adset.campaign_id} = ${campaign.id} ;;
+    sql_on: ${ad.campaign_id} = ${campaign.id} ;;
+    relationship: many_to_one
+  }
+
+  join: account {
+    from: account_fb_adapter
+    type: left_outer
+    sql_on: ${ad.account_id} = ${account.id} ;;
     relationship: many_to_one
   }
 }
@@ -29,11 +36,11 @@ view: ad_fb_adapter {
       SELECT ad_history.* FROM `{{ ad.facebook_ad_account_schema._sql }}.ad_history` as ad_history
       INNER JOIN (
         SELECT
-        id, max(updated_time) as max_update_time
+        id, max(_fivetran_synced) as max_fivetran_synced
         FROM `{{ ad.facebook_ad_account_schema._sql }}.ad_history`
         GROUP BY id) max_ad_history
       ON max_ad_history.id = ad_history.id
-      AND max_ad_history.max_update_time = ad_history.updated_time
+      AND max_ad_history.max_fivetran_synced = ad_history._fivetran_synced
     ) ;;
   }
 
@@ -112,6 +119,7 @@ view: ad_fb_adapter {
   }
 
   dimension: name {
+    hidden: yes
     type: string
     sql: ${TABLE}.name ;;
   }

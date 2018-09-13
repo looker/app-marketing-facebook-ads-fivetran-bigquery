@@ -14,11 +14,11 @@ view: account_fb_adapter {
       SELECT account_history.* FROM `{{ account.facebook_ad_account_schema._sql }}.account_history` as account_history
       INNER JOIN (
         SELECT
-        id, max(updated_time) as max_update_time
+        id, max(_fivetran_synced) as max_fivetran_synced
         FROM `{{ account.facebook_ad_account_schema._sql }}.account_history`
         GROUP BY id) max_account_history
       ON max_account_history.id = account_history.id
-      AND max_account_history.max_update_time = account_history.updated_time
+      AND max_account_history.max_fivetran_synced = account_history._fivetran_synced
     ) ;;
   }
 
@@ -72,6 +72,7 @@ view: account_fb_adapter {
   }
 
   dimension: name {
+    hidden: yes
     type: string
   }
 
