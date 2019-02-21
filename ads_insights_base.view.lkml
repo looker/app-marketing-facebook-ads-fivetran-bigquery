@@ -85,11 +85,6 @@ view: ads_insights_base_fb_adapter {
     type: number
   }
 
-  dimension: total_action_value {
-    hidden: yes
-    type: number
-  }
-
   dimension: total_actions {
     hidden: yes
     type: number
