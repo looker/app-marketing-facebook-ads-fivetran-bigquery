@@ -86,7 +86,7 @@ view: ad_impressions_fb_adapter {
   dimension: primary_key {
     hidden: yes
     primary_key: yes
-    sql: concat(${_date}
+    sql: concat(CAST(${_date} as STRING)
       , "|", ${account_id}
       , "|", ${campaign_id}
       , "|", ${adset_id}
