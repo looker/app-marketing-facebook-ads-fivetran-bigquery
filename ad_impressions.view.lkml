@@ -87,21 +87,22 @@ view: ad_impressions_fb_adapter {
     hidden: yes
     primary_key: yes
     sql: concat(CAST(${_date} as STRING)
-      , "|", ${account_id}
-      , "|", ${campaign_id}
-      , "|", ${adset_id}
-      , "|", ${ad_id}
+      , "|", COALESCE(${account_id}, '')
+      , "|", COALESCE(CAST(${campaign_id} AS STRING), '')
+      , "|", COALESCE(CAST(${adset_id} AS STRING), '')
+      , "|", COALESCE(CAST(${ad_id} AS STRING), '')
       , "|", ${breakdown}
     ) ;;
   }
+
 }
 
 view: age_and_gender_base_fb_adapter {
 
   dimension: breakdown {
     hidden: yes
-    sql: concat(${age}
-      ,"|", ${gender_raw}
+    sql: concat(COALESCE(CAST(${age} AS STRING), '')
+      ,"|", COALESCE(${gender_raw}, '')
     ) ;;
   }
   dimension: age {
@@ -204,9 +205,9 @@ view: platform_and_device_base_fb_adapter {
 
   dimension: breakdown {
     hidden: yes
-    sql: concat(${impression_device}
-      ,"|", ${platform_position_raw}
-      ,"|", ${publisher_platform_raw}
+    sql: concat(COALESCE(${impression_device}, '')
+      ,"|", COALESCE(${platform_position_raw}, '')
+      ,"|", COALESCE(${publisher_platform_raw}, '')
     ) ;;
   }
 
@@ -345,8 +346,8 @@ view: region_base_fb_adapter {
 
   dimension: breakdown {
     hidden: yes
-    sql: concat(${country}
-      ,"|", ${region}
+    sql: concat(COALESCE(${country}, '')
+      ,"|", COALESCE(${region}, '')
     ) ;;
   }
 
