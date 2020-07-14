@@ -87,7 +87,7 @@ view: ad_impressions_fb_adapter {
     hidden: yes
     primary_key: yes
     sql: concat(CAST(${_date} as STRING)
-      , "|", COALESCE(${account_id}, '')
+      , "|", COALESCE(CAST(${account_id} AS STRING), '')
       , "|", COALESCE(CAST(${campaign_id} AS STRING), '')
       , "|", COALESCE(CAST(${adset_id} AS STRING), '')
       , "|", COALESCE(CAST(${ad_id} AS STRING), '')
