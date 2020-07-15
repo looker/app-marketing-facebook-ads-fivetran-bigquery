@@ -393,6 +393,16 @@ view: ad_impressions_geo_fb_adapter {
 view: actions_fb_adapter {
   extends: [ads_insights_actions_base_fb_adapter, date_base_fb_adapter, facebook_ads_config]
   sql_table_name:  {{ actions.facebook_ads_schema._sql }}.ads_insights_actions ;;
+
+  dimension: primary_key {
+    hidden: yes
+    primary_key: yes
+    sql: concat(CAST(${_date} as STRING)
+      , "|", COALESCE(CAST(${action_type} AS STRING), '')
+      , "|", COALESCE(CAST(${ad_id} AS STRING), '')
+      , "|", ${breakdown}
+    ) ;;
+  }
 }
 
 view: actions_age_and_gender_fb_adapter {
