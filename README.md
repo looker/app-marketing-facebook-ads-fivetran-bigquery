@@ -1,5 +1,7 @@
 # Facebook Ads
 
+THIS BLOCK IS DEPRECATED AS OF 4/2/2021.
+
 LookML files for a schema mapping on BigQuery for Facebook Ads compatible with [Fivetran's Ads Insights ETL](https://fivetran.com/docs/applications/facebook-ads-insights). This is designed to work with a ETL agnostic [Facebook Ads block](https://github.com/looker/app-marketing-facebook-ads).
 
 ## To use this block, you will need to:
